@@ -1,0 +1,26 @@
+name: esp_provisioning_platform_interface
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/esp_provisioning_platform_interface.yaml"
+      - "esp_provisioning_platform_interface/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/esp_provisioning_platform_interface.yaml"
+      - "esp_provisioning_platform_interface/**"
+
+jobs:
+  build:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+    with:
+      flutter_channel: stable
+      flutter_version: 3.19.0
+      working_directory: esp_provisioning_platform_interface
+
