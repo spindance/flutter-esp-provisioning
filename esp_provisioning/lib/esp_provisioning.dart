@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:esp_provisioning_platform_interface/esp_provisioning_platform_interface.dart';
 
@@ -18,8 +19,9 @@ class EspProvisioning {
 
   /// Scans for BLE devices.
   Future<List<EspBleDevice>> scanForDevices(String? deviceNamePrefix) async {
-    final deviceNames = await _espPlatform.scanForEspDevices(deviceNamePrefix);
-    return deviceNames.map((deviceName) => EspBleDevice(name: deviceName)).toList();
+    final deviceJsonStrings = await _espPlatform.scanForEspDevices(deviceNamePrefix);
+    final devicesJson = deviceJsonStrings.map((e) => json.decode(e) as Map<String, dynamic>).toList();
+    return devicesJson.map(EspBleDevice.fromJson).toList();
   }
 
   /// Stops scanning for BLE devices.
@@ -37,25 +39,24 @@ class EspProvisioning {
 
   /// Gets the Wi-Fi access points visible to the device with [deviceName], sorted by their SSID.
   Future<List<EspWifiAccessPoint>> getAccessPoints(String deviceName) async {
-    // final timer = Timer(const Duration(seconds: 10), () {
-    //   throw TimeoutException('Failed to get access points within 10 seconds.');
-    // });
-    // final accessPoints = (await _espPlatform.getEspAccessPoints(deviceName)).map(EspWifiAccessPoint.fromMap).toList();
-    // timer.cancel();
-    // return accessPoints;
-
-    final ssids = await _espPlatform.getEspAccessPoints(deviceName).timeout(
+    final accessPointJsonStrings = await _espPlatform.getEspAccessPoints(deviceName).timeout(
       const Duration(seconds: 10),
       onTimeout: () => throw TimeoutException('Failed to get access points within 10 seconds.'),
     );
-    ssids.sort();
-    return ssids
-      .map( (ssid) => EspWifiAccessPoint(channel: 0, rssi: 0, security: EspWifiAccessPointSecurity.unknown, ssid: ssid))
-      .toList();
+    final accessPointMaps = accessPointJsonStrings.map((e) => json.decode(e) as Map<String, dynamic>).toList();
+    final accessPoints = accessPointMaps
+      .map(EspWifiAccessPoint.fromJson).toList()
+      ..sort((a, b) => a.ssid.compareTo(b.ssid));
+    return accessPoints;
   }
 
   /// Sets the Wi-Fi access point with the specified [ssid] and [password] on the device with [deviceName]. If this
   /// operation is successful, the device automatically disconnects.
   Future<void> setAccessPoint(String deviceName, String ssid, String password) =>
       _espPlatform.setEspAccessPoint(deviceName, ssid, password);
+
+  /// Sends the Base64 encoded string [base64Data] to the specified [endpoint] on the device with [deviceName],
+  /// returning a Base64 encoded response string.
+  Future<String> sendDataToEndpoint(String deviceName, String endpoint, String base64Data) =>
+      _espPlatform.sendData(deviceName, endpoint, base64Data);
 }

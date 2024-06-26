@@ -50,4 +50,5 @@ dependencies {
     implementation 'com.github.espressif:esp-idf-provisioning-android:lib-2.1.4'
     implementation "org.greenrobot:eventbus:3.2.0"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.0"
+    implementation 'com.google.code.gson:gson:2.11.0'
 }

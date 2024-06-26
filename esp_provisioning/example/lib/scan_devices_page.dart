@@ -58,6 +58,7 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
                 itemBuilder: (context, index) => Card(
                   child: ListTile(
                     title: Text(_scannedDevices[index].name),
+                    subtitle: Text('RSSI: ${_scannedDevices[index].rssi}'),
                     onTap: () {
                       final page = ConnectPage(provisioner: widget.provisioner, device: _scannedDevices[index]);
                       Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));

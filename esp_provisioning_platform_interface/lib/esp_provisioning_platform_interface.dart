@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
@@ -81,4 +80,16 @@ abstract class EspProvisioningPlatform extends PlatformInterface {
         'ssid': ssid,
         'password': password,
       });
+
+  /// Send Base64 encoded data to the ESP device with the specified [deviceName] using the custom BLE endpoint indicated
+  /// by [endpointPath].
+  Future<String> sendData(String deviceName, String endpointPath, String base64Data) async {
+    final base64StringResult = await methodChannel.invokeMethod<String>('sendData', <String, dynamic>{
+      'deviceName': deviceName,
+      'endpointPath': endpointPath,
+      'base64Data': base64Data,
+    });
+    if (base64StringResult == null) throw Exception('Unable to send data.');
+    return base64StringResult;
+  }
 }

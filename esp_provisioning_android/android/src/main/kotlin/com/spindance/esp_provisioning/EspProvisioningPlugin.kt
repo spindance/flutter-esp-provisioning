@@ -9,6 +9,7 @@ import com.espressif.provisioning.DeviceConnectionEvent
 import com.espressif.provisioning.ESPConstants
 import com.espressif.provisioning.ESPDevice
 import com.espressif.provisioning.ESPProvisionManager
+import com.google.gson.Gson
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -131,7 +132,11 @@ class EspProvisioningPlugin : FlutterPlugin, MethodCallHandler {
           onFailure = { resultCallback.logErrorAndFail(TAG, it) },
           onSuccess = { deviceMap ->
             scannedDevices = deviceMap
-            resultCallback.success(deviceMap.values.map { it.device.name })
+
+            // Convert the deviceMap to a list of EspBleDevice converted to JSON strings.
+            val devices = deviceMap.values.map { EspBleDevice(it.device.name, it.scanResult.rssi)}.toList()
+            val devicesJson = devices.map { Gson().toJson(it).toString() }
+            resultCallback.success(devicesJson)
           }
         )
       }
@@ -198,17 +203,12 @@ class EspProvisioningPlugin : FlutterPlugin, MethodCallHandler {
   /// Processes get access points requests.
   private fun getAccessPoints(deviceName: String, resultCallback: Result) {
     findEspDevice(deviceName, resultCallback)?.let { device ->
-      val listener = ScanNetworksListener { result ->
+      device.scanNetworks(ScanNetworksListener { result ->
         result.fold(
           onFailure = { resultCallback.logErrorAndFail(TAG, it) },
-          onSuccess = {
-            val ssids = it.map { accessPoint -> accessPoint.ssid }
-            Log.d(TAG, ssids.toString())
-            resultCallback.success(ssids)
-          }
+          onSuccess = { apList -> resultCallback.success(apList.map { Gson().toJson(it).toString() }) }
         )
-      }
-      device.scanNetworks(listener)
+      })
     }
   }
 
