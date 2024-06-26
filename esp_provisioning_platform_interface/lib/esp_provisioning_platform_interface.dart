@@ -1,11 +1,13 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
-export 'src/esp_ble_device.dart';
 
 class _MethodNames {
   static const scanBleDevices = 'scanBleDevices';
   static const stopBleDeviceScan = 'stopBleDeviceScan';
+  static const connect = 'connect';
+  static const disconnect = 'disconnect';
+  static const getAccessPoints = 'getAccessPoints';
 }
 
 /// The interface that implementations of esp_provisioning must implement.
@@ -51,4 +53,32 @@ abstract class EspProvisioningPlatform extends PlatformInterface {
 
   /// Stops an ongoing scan for devices.
   Future<void> stopEspDeviceScan() => methodChannel.invokeMethod<void>(_MethodNames.stopBleDeviceScan);
+
+  /// Connect to the ESP device with the specified [deviceName] using the optional [proofOfPossession] and the specified
+  /// [provisioningServiceUuid].
+  Future<void> connectDevice(String deviceName, String provisioningServiceUuid, String? proofOfPossession) =>
+      methodChannel.invokeMethod<void>(_MethodNames.connect, <String, dynamic>{
+        'deviceName': deviceName,
+        'provisioningServiceUuid': provisioningServiceUuid,
+        'proofOfPossession': proofOfPossession ?? '',
+      });
+
+  /// Disconnect from the ESP device with the specified [deviceName].
+  Future<void> disconnectDevice(String deviceName) =>
+      methodChannel.invokeMethod<void>(_MethodNames.disconnect, deviceName);
+
+  /// Get the list of access points available to the ESP device with the specified [deviceName].
+  Future<List<String>> getEspAccessPoints(String deviceName) async {
+    final accessPoints = await methodChannel.invokeListMethod<String>(_MethodNames.getAccessPoints, deviceName);
+    if (accessPoints == null) throw Exception('Unable to get access points.');
+    return accessPoints.cast<String>();
+  }
+
+  /// Set the access point on the ESP device with the specified [deviceName] to the specified [ssid] and [password].
+  Future<void> setEspAccessPoint(String deviceName, String ssid, String password) =>
+      methodChannel.invokeMethod<void>('setAccessPoint', <String, dynamic>{
+        'deviceName': deviceName,
+        'ssid': ssid,
+        'password': password,
+      });
 }

@@ -12,7 +12,7 @@ flutter:
     platforms:
       ios:
         pluginClass: EspProvisioningPlugin
-        dartPluginClass: EspProvisioningIOS
+        dartPluginClass: EspProvisioningIos
 
 dependencies:
   esp_provisioning_platform_interface:

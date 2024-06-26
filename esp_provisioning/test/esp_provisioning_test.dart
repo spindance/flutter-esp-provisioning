@@ -11,6 +11,9 @@ class MockEspProvisioningPlatform extends Mock
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  const deviceA = EspBleDevice(name: 'device A');
+  const deviceB = EspBleDevice(name: 'device B');
+
   group('EspProvisioning', () {
     final subject = EspProvisioning();
     late EspProvisioningPlatform espProvisioningPlatform;
@@ -28,8 +31,8 @@ void main() {
 
     test('scanForDevices', () async {
       const prefix = 'name prefix';
-      const devices = ['device1', 'device2'];
-      when(() => espProvisioningPlatform.scanForEspDevices(prefix)).thenAnswer((_) async => devices);
+      const devices = [deviceA, deviceB];
+      when(() => espProvisioningPlatform.scanForEspDevices(prefix)).thenAnswer((_) async => devices.map((d) => d.name).toList());
       expect(await subject.scanForDevices(prefix), devices);
     });
 

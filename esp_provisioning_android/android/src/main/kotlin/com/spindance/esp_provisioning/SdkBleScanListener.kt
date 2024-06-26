@@ -16,9 +16,7 @@ class SdkBleScanListener(
     completionCallback(Result.success(devices.toMap()))
   }
 
-  override fun scanStartFailed() {
-    fail(EspIdfProvisioningException.ScanStartFailed)
-  }
+  override fun scanStartFailed() = fail(EspException.ScanStartFailed)
 
   @SuppressLint("MissingPermission")
   override fun onPeripheralFound(device: BluetoothDevice?, scanResult: ScanResult?) {
@@ -26,16 +24,14 @@ class SdkBleScanListener(
 
     if (device == null || scanResult == null || scanRecord == null) {
       val description = "device or scanResult or scanRecord is null"
-      fail(EspIdfProvisioningException.Unexpected(description))
+      fail(EspException.Unexpected(description))
     } else {
       Log.d(TAG, "Got scanned device ${device.name}")
       devices[device.address] = ScannedPeripheral(device, scanResult, scanRecord)
     }
   }
 
-  override fun onFailure(e: Exception?) {
-    fail(e ?: EspIdfProvisioningException.Unexpected("Scan error (null)"))
-  }
+  override fun onFailure(e: Exception?) = fail(e ?: EspException.Unexpected("Scan error (null)"))
 
   private fun fail(error: Throwable) {
     Log.e(TAG, error.toString())
