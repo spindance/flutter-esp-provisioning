@@ -1,5 +1,6 @@
 import 'package:esp_provisioning/esp_provisioning.dart';
 import 'package:esp_provisioning_example/build_context_ext.dart';
+import 'package:esp_provisioning_example/constants.dart';
 import 'package:esp_provisioning_example/set_access_point_page.dart';
 import 'package:flutter/material.dart';
 
@@ -23,13 +24,15 @@ class _ConnectPageState extends State<ConnectPage> {
 
   @override
   Widget build(BuildContext context) {
+    final color = _enableDisconnect ? Colors.black : Colors.grey;
+
     return Scaffold(
       appBar: AppBar(title: Text(widget.device.name)),
       body: Center(
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(10),
               child: Row(
                 children: [
                   ElevatedButton(
@@ -46,19 +49,16 @@ class _ConnectPageState extends State<ConnectPage> {
             ),
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
-              child: Row(
-                children: [
-                  ElevatedButton(
-                    onPressed: _enableGetAccessPoints ? () => _getAccessPoints(context) : null,
-                    child: const Text('Get Access Points'),
-                  ),
-                  const Spacer(),
-                  ElevatedButton(
-                    onPressed: _enableDisconnect ? () => _showSetAccessPointPage(null) : null,
-                    child: const Text('Enter SSID Manually'),
-                  ),
-                ],
+              child: ElevatedButton(
+                onPressed: _enableGetAccessPoints ? () => _getAccessPoints(context) : null,
+                child: const Text('Get Access Points'),
               ),
+            ),
+            ListTile(
+              title: const Text('Enter Access Point Manually'),
+              titleTextStyle: TextStyle(color: color),
+              trailing: Icon(Icons.arrow_forward_ios, color: color),
+              onTap: _enableDisconnect ? () => _showSetAccessPointPage(null) : null,
             ),
             Expanded(
               child: ListView.builder(
@@ -83,8 +83,10 @@ class _ConnectPageState extends State<ConnectPage> {
     var message = 'Connected';
     setState(() => _isBusy = true);
 
+    context.showSimpleSnackBar('Connecting to ${widget.device.name}');
+
     try {
-      await widget.provisioner.connect(widget.device.name, '12345678-90AB-CDEF-FEDC-BA0987654321', null);
+      await widget.provisioner.connect(widget.device.name, Constants.deviceProvisioningServiceUuid, null);
       setState(() => _isConnected = true);
     } catch (e) {
       message = 'Failed to connect: $e';

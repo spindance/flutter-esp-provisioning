@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:esp_provisioning/esp_provisioning.dart';
 import 'package:esp_provisioning_example/build_context_ext.dart';
 import 'package:esp_provisioning_example/connect_page.dart';
@@ -34,7 +36,7 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
                   children: [
                     ElevatedButton(
                       onPressed: _isScanning ? null : () => _scanTapped(context),
-                      child: const Text('Scan for Devices'),
+                      child: const Text('Scan'),
                     ),
                     const Spacer(),
                     ElevatedButton(
@@ -47,22 +49,25 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
               TextField(
                 decoration: const InputDecoration(
                   border: OutlineInputBorder(),
-                  labelText: 'Optional device name prefix (case sensitive)',
+                  labelText: 'Device name prefix (optional, case sensitive)',
+                  labelStyle: TextStyle(fontSize: 11),
                 ),
                 onSubmitted: (text) => setState(() => _deviceNamePrefix = text),
                 onChanged: (text) => setState(() => _deviceNamePrefix = text),
               ),
-              ListView.builder(
-                shrinkWrap: true,
-                itemCount: _scannedDevices.length,
-                itemBuilder: (context, index) => Card(
-                  child: ListTile(
-                    title: Text(_scannedDevices[index].name),
-                    subtitle: Text('RSSI: ${_scannedDevices[index].rssi}'),
-                    onTap: () {
-                      final page = ConnectPage(provisioner: widget.provisioner, device: _scannedDevices[index]);
-                      Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
-                    },
+              Expanded(
+                child: ListView.builder(
+                  shrinkWrap: true,
+                  itemCount: _scannedDevices.length,
+                  itemBuilder: (context, index) => Card(
+                    child: ListTile(
+                      title: Text(_scannedDevices[index].name),
+                      subtitle: Text('RSSI: ${_scannedDevices[index].rssi}'),
+                      onTap: () {
+                        final page = ConnectPage(provisioner: widget.provisioner, device: _scannedDevices[index]);
+                        Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -112,6 +117,8 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
     widget.provisioner.stopScan();
   }
 
-  Future<bool> _checkBlePermissions() async =>
-      await Permission.bluetoothConnect.request().isGranted && await Permission.bluetoothScan.request().isGranted;
+  Future<bool> _checkBlePermissions() async {
+    if (!Platform.isAndroid) return true;
+    return await Permission.bluetoothConnect.request().isGranted && await Permission.bluetoothScan.request().isGranted;
+  }
 }
