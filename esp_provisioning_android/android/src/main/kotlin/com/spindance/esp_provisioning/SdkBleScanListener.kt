@@ -12,7 +12,7 @@ class SdkBleScanListener(
   private var devices = mutableMapOf<String, ScannedPeripheral>()
 
   override fun scanCompleted() {
-    Log.d(EspProvisioningPlugin.TAG,"Found ${devices.values.size} device(s)")
+    Log.d(TAG,"Found ${devices.values.size} device(s)")
     completionCallback(Result.success(devices.toMap()))
   }
 

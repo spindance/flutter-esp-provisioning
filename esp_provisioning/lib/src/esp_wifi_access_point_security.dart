@@ -1,25 +1,27 @@
+import 'plugin_wifi_security_names.dart';
+
 /// Wi-Fi access point security modes, as defined by Espressif.
 enum EspWifiAccessPointSecurity {
   /// Open security.
-  open(value: 'OPEN'),
+  open(value: PluginWifiSecurityNames.open),
 
   /// WEP security.
-  wep(value: 'WEP'),
+  wep(value: PluginWifiSecurityNames.wep),
 
   /// WPA-PSK security.
-  wpaPsk(value: 'WPA_PSK'),
+  wpaPsk(value: PluginWifiSecurityNames.wpaPsk),
 
   /// WPA2-PSK security.
-  wpa2Psk(value: 'WPA2PSK'),
+  wpa2Psk(value: PluginWifiSecurityNames.wpa2psk),
 
   /// WPA/WPA2-PSK security.
-  wpaWpa2Psk(value: 'WPA_WPA2_PSK'),
+  wpaWpa2Psk(value: PluginWifiSecurityNames.wpaWpa2Psk),
 
   /// WPA2-Enterprise security.
-  wpa2Enterprise(value: 'WPA2_ENTERPRISE'),
+  wpa2Enterprise(value: PluginWifiSecurityNames.wpa2Enterprise),
 
   /// Unknown security.
-  unknown(value: 'UNKNOWN');
+  unknown(value: PluginWifiSecurityNames.unknown);
 
   const EspWifiAccessPointSecurity({required this.value});
 

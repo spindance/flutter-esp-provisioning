@@ -47,7 +47,7 @@ enum Utilities {
     line: Int = #line
   ) {
     let filename = formatFileName(file: file)
-    print("Logger: \(filename) \(function) line: \(line): \(message)")
+    print("\(filename) \(function) line: \(line): \(message)")
   }
 
   static func formatFileName(file: String) -> String {

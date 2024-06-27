@@ -2,24 +2,6 @@ import ESPProvision
 import Flutter
 import UIKit
 
-private enum Constants {
-  static let pluginName = "esp_provisioning_ios"
-  static let scanBleDevices = "scanBleDevices"
-  static let stopBleDeviceScan = "stopBleDeviceScan"
-  static let connect = "connect"
-  static let disconnect = "disconnect"
-  static let getAccessPoints = "getAccessPoints"
-  static let setAccessPoint = "setAccessPoint"
-  static let sendData = "sendData"
-  static let deviceName = "deviceName"
-  static let serviceUuid = "provisioningServiceUuid"
-  static let proofOfPossession = "proofOfPossession"
-  static let ssid = "ssid"
-  static let password = "password"
-  static let endpointPath = "endpointPath"
-  static let base64DataString = "base64Data"
-}
-
 public class EspProvisioningPlugin: NSObject, FlutterPlugin {
   /// We  only support "security 1" devices.
   private static let security = ESPSecurity.secure
@@ -39,7 +21,7 @@ public class EspProvisioningPlugin: NSObject, FlutterPlugin {
   private var scanInProgress = false
 
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: Constants.pluginName, binaryMessenger: registrar.messenger())
+    let channel = FlutterMethodChannel(name: PluginConstants.pluginName, binaryMessenger: registrar.messenger())
     let instance = EspProvisioningPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
@@ -48,53 +30,53 @@ public class EspProvisioningPlugin: NSObject, FlutterPlugin {
     let badInputsError = EspPluginError.invalidMethodChannelInputs(call.method)
 
     switch call.method {
-    case Constants.scanBleDevices:
+    case PluginConstants.MethodNames.scanBleDevices:
       searchEspDevices(devicePrefix: call.arguments as? String ?? "", resultCallback: result)
-    case Constants.stopBleDeviceScan:
+    case PluginConstants.MethodNames.stopBleDeviceScan:
       stopEspDeviceSearch(result)
-    case Constants.connect:
-      guard 
+    case PluginConstants.MethodNames.connect:
+      guard
         let dictionary = call.arguments as? Dictionary<String, String>,
-        let deviceName = dictionary[Constants.deviceName],
-        let pop = dictionary[Constants.proofOfPossession] 
+        let deviceName = dictionary[PluginConstants.ArgumentNames.deviceName],
+        let pop = dictionary[PluginConstants.ArgumentNames.proofOfPossession]
       else {
         Utilities.reportFailure(with: badInputsError, resultCallback: result)
         return
       }
       
       connect(deviceName: deviceName, proofOfPossession: pop, resultCallback: result)
-    case Constants.disconnect:
+    case PluginConstants.MethodNames.disconnect:
       guard let deviceName = call.arguments as? String else {
         Utilities.reportFailure(with: badInputsError, resultCallback: result)
         return
       }
 
       disconnect(deviceName: deviceName, resultCallback: result)
-    case Constants.getAccessPoints:
+    case PluginConstants.MethodNames.getAccessPoints:
       guard let deviceName = call.arguments as? String else {
         Utilities.reportFailure(with: badInputsError, resultCallback: result)
         return
       }
 
       scanWifiList(deviceName: deviceName, resultCallback: result)
-    case Constants.setAccessPoint:
+    case PluginConstants.MethodNames.setAccessPoint:
       guard
         let dictionary = call.arguments as? Dictionary<String, String>,
-        let deviceName = dictionary[Constants.deviceName],
-        let ssid = dictionary[Constants.ssid],
-        let password = dictionary[Constants.password]
+        let deviceName = dictionary[PluginConstants.ArgumentNames.deviceName],
+        let ssid = dictionary[PluginConstants.ArgumentNames.ssid],
+        let password = dictionary[PluginConstants.ArgumentNames.password]
       else {
         Utilities.reportFailure(with: badInputsError, resultCallback: result)
         return
       }
 
       provision(deviceName: deviceName, ssid: ssid, passPhrase: password, resultCallback: result)
-    case Constants.sendData:
+    case PluginConstants.MethodNames.sendData:
       guard
         let dictionary = call.arguments as? Dictionary<String, String>,
-        let deviceName = dictionary[Constants.deviceName],
-        let endpointPath = dictionary[Constants.endpointPath],
-        let dataString = dictionary[Constants.base64DataString]
+        let deviceName = dictionary[PluginConstants.ArgumentNames.deviceName],
+        let endpointPath = dictionary[PluginConstants.ArgumentNames.endpointPath],
+        let dataString = dictionary[PluginConstants.ArgumentNames.base64DataString]
       else {
         Utilities.reportFailure(with: badInputsError, resultCallback: result)
         return

@@ -11,7 +11,8 @@ class EspBleDevice with _$EspBleDevice {
   const factory EspBleDevice({
     /// The device's advertised name.
     required String name,
-    /// The device's BLE RSSI.
+
+    /// The device's BLE RSSI. The Espressif iOS library does not provide this value; on iOS it will always be 0.
     required int rssi,
   }) = _EspBleDevice;
 

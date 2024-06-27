@@ -23,7 +23,7 @@ mixin _$EspBleDevice {
   /// The device's advertised name.
   String get name => throw _privateConstructorUsedError;
 
-  /// The device's BLE RSSI.
+  /// The device's BLE RSSI. The Espressif iOS library does not provide this value; on iOS it will always be 0.
   int get rssi => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -120,7 +120,7 @@ class _$EspBleDeviceImpl with DiagnosticableTreeMixin implements _EspBleDevice {
   @override
   final String name;
 
-  /// The device's BLE RSSI.
+  /// The device's BLE RSSI. The Espressif iOS library does not provide this value; on iOS it will always be 0.
   @override
   final int rssi;
 
@@ -179,7 +179,7 @@ abstract class _EspBleDevice implements EspBleDevice {
   String get name;
   @override
 
-  /// The device's BLE RSSI.
+  /// The device's BLE RSSI. The Espressif iOS library does not provide this value; on iOS it will always be 0.
   int get rssi;
   @override
   @JsonKey(ignore: true)

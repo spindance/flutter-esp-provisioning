@@ -11,8 +11,8 @@ class MockEspProvisioningPlatform extends Mock
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  const deviceA = EspBleDevice(name: 'device A');
-  const deviceB = EspBleDevice(name: 'device B');
+  const deviceA = EspBleDevice(name: 'device A', rssi: -50);
+  const deviceB = EspBleDevice(name: 'device B', rssi: -60);
 
   group('EspProvisioning', () {
     final subject = EspProvisioning();

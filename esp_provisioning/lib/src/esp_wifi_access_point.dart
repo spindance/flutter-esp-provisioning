@@ -13,10 +13,13 @@ class EspWifiAccessPoint with _$EspWifiAccessPoint{
   factory EspWifiAccessPoint({
     /// The SSID of the access point.
     required String ssid,
+
     /// The channel of the access point. On Android, channel is unsupported so the value is always 0.
     required int channel,
+
     /// The security configuration of the access point.
     required EspWifiAccessPointSecurity security,
+
     /// The Wi-Fi signal strength of the access point.
     required int rssi,
   }) = _EspWifiAccessPoint;

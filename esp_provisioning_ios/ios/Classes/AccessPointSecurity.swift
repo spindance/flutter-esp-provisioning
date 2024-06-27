@@ -14,13 +14,13 @@ enum AccessPointSecurity: Int, Codable {
     var container = encoder.singleValueContainer()
 
     switch self {
-    case .open: stringValue = "OPEN"
-    case .wep: stringValue = "WEP"
-    case .wpaPsk: stringValue = "WPA_PSK"
-    case .wpa2Psk: stringValue = "WPA2PSK"
-    case .wpaWpa2Psk: stringValue = "WPA_WPA2_PSK"
-    case .wpa2Enterprise: stringValue = "WPA2_ENTERPRISE"
-    case .unknown: stringValue = "UNKNOWN"
+    case .open: stringValue = PluginConstants.WifiSecurityNames.open
+    case .wep: stringValue = PluginConstants.WifiSecurityNames.wep
+    case .wpaPsk: stringValue = PluginConstants.WifiSecurityNames.wpaPsk
+    case .wpa2Psk: stringValue = PluginConstants.WifiSecurityNames.wpa2psk
+    case .wpaWpa2Psk: stringValue = PluginConstants.WifiSecurityNames.wpaWpa2Psk
+    case .wpa2Enterprise: stringValue = PluginConstants.WifiSecurityNames.wpa2Enterprise
+    case .unknown: stringValue = PluginConstants.WifiSecurityNames.unknown
     }
 
     try container.encode(stringValue)
