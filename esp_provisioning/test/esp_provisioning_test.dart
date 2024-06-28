@@ -11,6 +11,18 @@ void main() {
 
   const deviceA = EspBleDevice(name: 'device A', rssi: -50);
   const deviceB = EspBleDevice(name: 'device B', rssi: -60);
+  const devices = [deviceA, deviceB];
+
+  const ap = EspWifiAccessPoint(ssid: 'ssid', channel: 1, security: EspWifiAccessPointSecurity.wep, rssi: -1);
+
+  /// MethodChannel returns the BLE and Access Point scan result JSON strings in a strange format. This format with
+  /// double quotes inside single quotes seems to match what it returns. Simply converting the objects in question to
+  /// JSON strings did not work here in unit tests.
+  final deviceAJsonString = '{"name": "${deviceA.name}", "rssi": ${deviceA.rssi}}';
+  final deviceBJsonString = '{"name": "${deviceB.name}", "rssi": ${deviceB.rssi}}';
+  final deviceJsonStrings = [deviceAJsonString, deviceBJsonString];
+  final accessPointJsonString =
+      '{"ssid": "${ap.ssid}", "channel": ${ap.channel}, "security": "${ap.security.value}", "rssi": ${ap.rssi}}';
 
   group('EspProvisioning', () {
     final subject = EspProvisioning();
@@ -29,15 +41,50 @@ void main() {
 
     test('scanForDevices', () async {
       const prefix = 'name prefix';
-      const devices = [deviceA, deviceB];
-      when(() => espProvisioningPlatform.scanForEspDevices(prefix))
-          .thenAnswer((_) async => devices.map((d) => d.name).toList());
+      when(() => espProvisioningPlatform.scanForEspDevices(prefix)).thenAnswer((_) async => deviceJsonStrings);
       expect(await subject.scanForDevices(prefix), devices);
+      verify(() => espProvisioningPlatform.scanForEspDevices(prefix)).called(1);
     });
 
-    test('stopScan', () {
+    test('stopScan', () async {
       when(() => espProvisioningPlatform.stopEspDeviceScan()).thenAnswer((_) async {});
-      expect(subject.stopScan(), completes);
+      await subject.stopScan();
+      verify(() => espProvisioningPlatform.stopEspDeviceScan()).called(1);
+    });
+
+    test('connect', () async {
+      when(() => espProvisioningPlatform.connectDevice(deviceA.name, 'uuid', null)).thenAnswer((_) async {});
+      await subject.connect(deviceA.name, 'uuid', null);
+      verify(() => espProvisioningPlatform.connectDevice(deviceA.name, 'uuid', null)).called(1);
+    });
+
+    test('disconnect', () async {
+      when(() => espProvisioningPlatform.disconnectDevice(deviceA.name)).thenAnswer((_) async {});
+      await subject.disconnect(deviceA.name);
+      verify(() => espProvisioningPlatform.disconnectDevice(deviceA.name)).called(1);
+    });
+
+    test('getAccessPoints', () async {
+      when(() => espProvisioningPlatform.getEspAccessPoints(deviceA.name))
+          .thenAnswer((_) async => [accessPointJsonString]);
+      expect(await subject.getAccessPoints(deviceA.name), [ap]);
+      verify(() => espProvisioningPlatform.getEspAccessPoints(deviceA.name)).called(1);
+    });
+
+    test('setAccessPoint', () async {
+      const password = 'password';
+      when(() => espProvisioningPlatform.setEspAccessPoint(deviceA.name, ap.ssid, password)).thenAnswer((_) async {});
+      await subject.setAccessPoint(deviceA.name, ap.ssid, password);
+      verify(() => espProvisioningPlatform.setEspAccessPoint(deviceA.name, ap.ssid, password)).called(1);
+    });
+
+    test('sendDataToEndpoint', () async {
+      const endpoint = 'endpoint';
+      const data = 'data';
+      const response = 'response';
+      when(() => espProvisioningPlatform.sendData(deviceA.name, endpoint, data)).thenAnswer((_) async => response);
+      expect(await subject.sendDataToEndpoint(deviceA.name, endpoint, data), response);
+      verify(() => espProvisioningPlatform.sendData(deviceA.name, endpoint, data)).called(1);
     });
   });
 }

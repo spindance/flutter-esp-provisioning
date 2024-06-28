@@ -39,13 +39,19 @@ class EspProvisioning {
 
   /// Gets the Wi-Fi access points visible to the device with [deviceName], sorted by their SSID.
   Future<List<EspWifiAccessPoint>> getAccessPoints(String deviceName) async {
+    // Get the access points as JSON strings.
     final accessPointJsonStrings = await _espPlatform.getEspAccessPoints(deviceName).timeout(
           const Duration(seconds: 10),
           onTimeout: () => throw TimeoutException('Failed to get access points within 10 seconds.'),
         );
+
+    // Deserialize the JSON strings into maps.
     final accessPointMaps = accessPointJsonStrings.map((e) => json.decode(e) as Map<String, dynamic>).toList();
+
+    // Convert the maps into EspWifiAccessPoint objects and return the sorted by SSID.
     final accessPoints = accessPointMaps.map(EspWifiAccessPoint.fromJson).toList()
       ..sort((a, b) => a.ssid.compareTo(b.ssid));
+
     return accessPoints;
   }
 
