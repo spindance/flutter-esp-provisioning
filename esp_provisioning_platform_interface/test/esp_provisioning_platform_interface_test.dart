@@ -8,6 +8,8 @@ class _EspProvisioningMock extends EspProvisioningPlatform {
 
   @override
   final String methodChannelName = 'esp_provisioning_mock';
+
+  static void registerWith() => EspProvisioningPlatform.instance = _EspProvisioningMock();
 }
 
 void main() {
@@ -18,14 +20,15 @@ void main() {
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  final messenger = TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger;
+
   group('EspProvisioningPlatformInterface', () {
     setUp(() {
       subject = _EspProvisioningMock();
       EspProvisioningPlatform.instance = subject;
       log = <MethodCall>[];
 
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(subject.methodChannel,
-          (methodCall) async {
+      messenger.setMockMethodCallHandler(subject.methodChannel, (methodCall) async {
         log.add(methodCall);
 
         switch (methodCall.method) {
@@ -49,11 +52,21 @@ void main() {
       });
     });
 
+    test('instance access', () {
+      _EspProvisioningMock.registerWith();
+      expect(EspProvisioningPlatform.instance, isA<_EspProvisioningMock>());
+    });
+
     test('scanForEspDevices', () async {
       const prefix = 'Prefix';
       final result = await subject.scanForEspDevices(prefix);
       expect(log, <Matcher>[isMethodCall('scanBleDevices', arguments: prefix)]);
       expect(result, equals(scannedDeviceNames));
+    });
+
+    test('scanForEspDevices throws when return value is null', () async {
+      messenger.setMockMethodCallHandler(subject.methodChannel, (methodCall) async => null);
+      expect(() async => subject.scanForEspDevices(null), throwsA(isA<Exception>()));
     });
 
     test('stopEspDeviceScan', () async {
@@ -85,6 +98,11 @@ void main() {
       expect(log, <Matcher>[isMethodCall('getAccessPoints', arguments: deviceName)]);
     });
 
+    test('getEspAccessPoints throws when return value is null', () async {
+      messenger.setMockMethodCallHandler(subject.methodChannel, (methodCall) async => null);
+      expect(() async => subject.getEspAccessPoints(deviceName), throwsA(isA<Exception>()));
+    });
+
     test('setAccessPoint', () async {
       const ssid = 'SSID';
       const password = 'Password';
@@ -111,6 +129,11 @@ void main() {
       };
 
       expect(log, <Matcher>[isMethodCall('sendData', arguments: expectedArguments)]);
+    });
+
+    test('sendData throws when return value is null', () async {
+      messenger.setMockMethodCallHandler(subject.methodChannel, (methodCall) async => null);
+      expect(() async => subject.sendData(deviceName, 'Endpoint', 'Data'), throwsA(isA<Exception>()));
     });
   });
 }
