@@ -7,7 +7,13 @@
 A Flutter Federated Plugin created by SpinDance that wraps the Espressif [Android](https://github.com/espressif/esp-idf-provisioning-android) and [iOS](https://github.com/espressif/esp-idf-provisioning-ios) Wi-Fi provisioning libraries.
 
 IMPORTANT!
-This plugin only supports Espressif BLE (not SoftAP!) devices running [Protocomm Security 1](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/provisioning/protocomm.html).
+This plugin only supports Espressif BLE devices running [Protocomm Security 1](https://docs.espressif.com/projects/esp-idf/en/stable/esp32/api-reference/provisioning/protocomm.html).
+
+To be clear, this plugin does not (yet) support:
+
+- Espressif Protocomm Security0 devices
+- Espressif Protocomm Security1 devices
+- Espressif SoftAP devices
 
 ## Integration tests 🧪
 
