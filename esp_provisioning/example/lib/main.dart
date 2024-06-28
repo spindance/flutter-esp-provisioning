@@ -8,6 +8,5 @@ class EspProvisioningExample extends StatelessWidget {
   const EspProvisioningExample({super.key});
 
   @override
-  Widget build(BuildContext context) =>
-      MaterialApp(home: ScanDevicesPage(provisioner: EspProvisioning()));
+  Widget build(BuildContext context) => MaterialApp(home: ScanDevicesPage(provisioner: EspProvisioning()));
 }

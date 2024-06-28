@@ -25,8 +25,7 @@ enum EspWifiAccessPointSecurity {
 
   const EspWifiAccessPointSecurity({required this.value});
 
-  factory EspWifiAccessPointSecurity.fromJson(String value) =>
-      values.firstWhere((element) => element.value == value);
+  factory EspWifiAccessPointSecurity.fromJson(String value) => values.firstWhere((element) => element.value == value);
 
   /// The String value of the security mode.
   final String value;

@@ -25,6 +25,5 @@ class EspWifiAccessPoint with _$EspWifiAccessPoint {
   }) = _EspWifiAccessPoint;
 
   /// Creates a new instance of [EspWifiAccessPoint] from a JSON object.
-  factory EspWifiAccessPoint.fromJson(Map<String, dynamic> json) =>
-      _$EspWifiAccessPointFromJson(json);
+  factory EspWifiAccessPoint.fromJson(Map<String, dynamic> json) => _$EspWifiAccessPointFromJson(json);
 }

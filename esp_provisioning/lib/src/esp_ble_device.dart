@@ -17,6 +17,5 @@ class EspBleDevice with _$EspBleDevice {
   }) = _EspBleDevice;
 
   /// Creates a new instance of [EspBleDevice] from a JSON object.
-  factory EspBleDevice.fromJson(Map<String, dynamic> json) =>
-      _$EspBleDeviceFromJson(json);
+  factory EspBleDevice.fromJson(Map<String, dynamic> json) => _$EspBleDeviceFromJson(json);
 }
