@@ -23,5 +23,5 @@ jobs:
       flutter_channel: stable
       flutter_version: 3.19.0
       working_directory: esp_provisioning_android
-      format_line_length: 120
+      format_line_length: "120"
 
