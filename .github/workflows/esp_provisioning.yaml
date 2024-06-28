@@ -32,7 +32,7 @@ jobs:
       flutter_channel: stable
       flutter_version: 3.19.0
       working_directory: esp_provisioning
-
+      format_line_length: 120
 
   android:
     runs-on: macos-latest
