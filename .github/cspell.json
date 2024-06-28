@@ -16,6 +16,11 @@
   ],
   "useGitignore": true,
   "words": [
-    "fluttium"
+    "fluttium",
+    "Espressif",
+    "Protocomm",
+    "mocktail",
+    "ssid",
+    "ssids"
   ]
 }
