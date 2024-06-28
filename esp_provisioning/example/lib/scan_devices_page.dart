@@ -26,7 +26,8 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
     return GestureDetector(
       onTap: hideKeyboard,
       child: Scaffold(
-        appBar: AppBar(title: Text('EspProvisioning ${widget.provisioner.platformName}')),
+        appBar: AppBar(
+            title: Text('EspProvisioning ${widget.provisioner.platformName}')),
         body: Center(
           child: Column(
             children: [
@@ -35,7 +36,8 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
                 child: Row(
                   children: [
                     ElevatedButton(
-                      onPressed: _isScanning ? null : () => _scanTapped(context),
+                      onPressed:
+                          _isScanning ? null : () => _scanTapped(context),
                       child: const Text('Scan'),
                     ),
                     const Spacer(),
@@ -64,8 +66,11 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
                       title: Text(_scannedDevices[index].name),
                       subtitle: Text('RSSI: ${_scannedDevices[index].rssi}'),
                       onTap: () {
-                        final page = ConnectPage(provisioner: widget.provisioner, device: _scannedDevices[index]);
-                        Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
+                        final page = ConnectPage(
+                            provisioner: widget.provisioner,
+                            device: _scannedDevices[index]);
+                        Navigator.of(context).push(
+                            MaterialPageRoute<void>(builder: (_) => page));
                       },
                     ),
                   ),
@@ -82,7 +87,8 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
     hideKeyboard();
 
     if (!(await _checkBlePermissions())) {
-      if (context.mounted) context.showSimpleSnackBar('Bluetooth permissions were denied');
+      if (context.mounted)
+        context.showSimpleSnackBar('Bluetooth permissions were denied');
 
       return;
     }
@@ -96,12 +102,14 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
       });
 
       context.showSimpleSnackBar('Scanning');
-      final deviceNames = await widget.provisioner.scanForDevices(_deviceNamePrefix);
+      final deviceNames =
+          await widget.provisioner.scanForDevices(_deviceNamePrefix);
 
       if (!context.mounted) return;
 
       final length = deviceNames.length;
-      context.showSimpleSnackBar('Found $length ${length == 1 ? 'device' : 'devices'}');
+      context.showSimpleSnackBar(
+          'Found $length ${length == 1 ? 'device' : 'devices'}');
       setState(() {
         _scannedDevices = deviceNames;
         _isScanning = false;
@@ -119,6 +127,7 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
 
   Future<bool> _checkBlePermissions() async {
     if (!Platform.isAndroid) return true;
-    return await Permission.bluetoothConnect.request().isGranted && await Permission.bluetoothScan.request().isGranted;
+    return await Permission.bluetoothConnect.request().isGranted &&
+        await Permission.bluetoothScan.request().isGranted;
   }
 }

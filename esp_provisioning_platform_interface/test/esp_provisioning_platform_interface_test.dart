@@ -24,8 +24,8 @@ void main() {
       EspProvisioningPlatform.instance = subject;
       log = <MethodCall>[];
 
-      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(subject.methodChannel,
-          (methodCall) async {
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+          .setMockMethodCallHandler(subject.methodChannel, (methodCall) async {
         log.add(methodCall);
 
         switch (methodCall.method) {
@@ -58,13 +58,15 @@ void main() {
 
     test('stopEspDeviceScan', () async {
       await subject.stopEspDeviceScan();
-      expect(log, <Matcher>[isMethodCall('stopBleDeviceScan', arguments: null)]);
+      expect(
+          log, <Matcher>[isMethodCall('stopBleDeviceScan', arguments: null)]);
     });
 
     test('connectDevice', () async {
       const provisioningServiceUuid = 'UUID';
       const proofOfPossession = 'Proof';
-      await subject.connectDevice(deviceName, provisioningServiceUuid, proofOfPossession);
+      await subject.connectDevice(
+          deviceName, provisioningServiceUuid, proofOfPossession);
 
       final expectedArguments = <String, dynamic>{
         'deviceName': deviceName,
@@ -72,7 +74,8 @@ void main() {
         'proofOfPossession': proofOfPossession,
       };
 
-      expect(log, <Matcher>[isMethodCall('connect', arguments: expectedArguments)]);
+      expect(log,
+          <Matcher>[isMethodCall('connect', arguments: expectedArguments)]);
     });
 
     test('disconnectDevice', () async {
@@ -82,7 +85,8 @@ void main() {
 
     test('getEspAccessPoints', () async {
       await subject.getEspAccessPoints(deviceName);
-      expect(log, <Matcher>[isMethodCall('getAccessPoints', arguments: deviceName)]);
+      expect(log,
+          <Matcher>[isMethodCall('getAccessPoints', arguments: deviceName)]);
     });
 
     test('setAccessPoint', () async {
@@ -96,7 +100,9 @@ void main() {
         'password': password,
       };
 
-      expect(log, <Matcher>[isMethodCall('setAccessPoint', arguments: expectedArguments)]);
+      expect(log, <Matcher>[
+        isMethodCall('setAccessPoint', arguments: expectedArguments)
+      ]);
     });
 
     test('sendData', () async {
@@ -110,7 +116,8 @@ void main() {
         'base64Data': data,
       };
 
-      expect(log, <Matcher>[isMethodCall('sendData', arguments: expectedArguments)]);
+      expect(log,
+          <Matcher>[isMethodCall('sendData', arguments: expectedArguments)]);
     });
   });
 }

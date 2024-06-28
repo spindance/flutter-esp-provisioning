@@ -5,7 +5,8 @@ import 'package:esp_provisioning_example/set_access_point_page.dart';
 import 'package:flutter/material.dart';
 
 class ConnectPage extends StatefulWidget {
-  const ConnectPage({required this.provisioner, required this.device, super.key});
+  const ConnectPage(
+      {required this.provisioner, required this.device, super.key});
 
   final EspProvisioning provisioner;
   final EspBleDevice device;
@@ -36,12 +37,15 @@ class _ConnectPageState extends State<ConnectPage> {
               child: Row(
                 children: [
                   ElevatedButton(
-                    onPressed: _enableConnect ? () => _connectTapped(context) : null,
+                    onPressed:
+                        _enableConnect ? () => _connectTapped(context) : null,
                     child: const Text('Connect'),
                   ),
                   const Spacer(),
                   ElevatedButton(
-                    onPressed: _enableDisconnect ? () => _disconnectTapped(context) : null,
+                    onPressed: _enableDisconnect
+                        ? () => _disconnectTapped(context)
+                        : null,
                     child: const Text('Disconnect'),
                   ),
                 ],
@@ -50,7 +54,9 @@ class _ConnectPageState extends State<ConnectPage> {
             Padding(
               padding: const EdgeInsets.only(bottom: 8),
               child: ElevatedButton(
-                onPressed: _enableGetAccessPoints ? () => _getAccessPoints(context) : null,
+                onPressed: _enableGetAccessPoints
+                    ? () => _getAccessPoints(context)
+                    : null,
                 child: const Text('Get Access Points'),
               ),
             ),
@@ -58,7 +64,9 @@ class _ConnectPageState extends State<ConnectPage> {
               title: const Text('Enter Access Point Manually'),
               titleTextStyle: TextStyle(color: color),
               trailing: Icon(Icons.arrow_forward_ios, color: color),
-              onTap: _enableDisconnect ? () => _showSetAccessPointPage(null) : null,
+              onTap: _enableDisconnect
+                  ? () => _showSetAccessPointPage(null)
+                  : null,
             ),
             Expanded(
               child: ListView.builder(
@@ -67,7 +75,8 @@ class _ConnectPageState extends State<ConnectPage> {
                 itemBuilder: (context, index) => Card(
                   child: ListTile(
                     title: Text(_accessPoints[index].ssid),
-                    subtitle: Text('RSSI: ${_accessPoints[index].rssi}, ${_accessPoints[index].security.name}'),
+                    subtitle: Text(
+                        'RSSI: ${_accessPoints[index].rssi}, ${_accessPoints[index].security.name}'),
                     onTap: () => _showSetAccessPointPage(_accessPoints[index]),
                   ),
                 ),
@@ -86,7 +95,8 @@ class _ConnectPageState extends State<ConnectPage> {
     context.showSimpleSnackBar('Connecting to ${widget.device.name}');
 
     try {
-      await widget.provisioner.connect(widget.device.name, Constants.deviceProvisioningServiceUuid, null);
+      await widget.provisioner.connect(
+          widget.device.name, Constants.provisioningServiceUuid, null);
       setState(() => _isConnected = true);
     } catch (e) {
       message = 'Failed to connect: $e';
@@ -124,7 +134,8 @@ class _ConnectPageState extends State<ConnectPage> {
     });
 
     try {
-      final accessPoints = await widget.provisioner.getAccessPoints(widget.device.name);
+      final accessPoints =
+          await widget.provisioner.getAccessPoints(widget.device.name);
       message = 'Found ${accessPoints.length} access points';
       setState(() => _accessPoints = accessPoints);
     } catch (e) {
@@ -137,7 +148,10 @@ class _ConnectPageState extends State<ConnectPage> {
   }
 
   void _showSetAccessPointPage(EspWifiAccessPoint? accessPoint) {
-    final page = SetAccessPointPage(provisioner: widget.provisioner, device: widget.device, accessPoint: accessPoint);
+    final page = SetAccessPointPage(
+        provisioner: widget.provisioner,
+        device: widget.device,
+        accessPoint: accessPoint);
     Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => page));
   }
 }

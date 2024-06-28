@@ -9,5 +9,6 @@ class EspProvisioningIos extends EspProvisioningPlatform {
   final String platformName = 'iOS';
 
   /// Registers this class as the default instance of [EspProvisioningPlatform].
-  static void registerWith() => EspProvisioningPlatform.instance = EspProvisioningIos();
+  static void registerWith() =>
+      EspProvisioningPlatform.instance = EspProvisioningIos();
 }

@@ -9,5 +9,6 @@ class EspProvisioningAndroid extends EspProvisioningPlatform {
   final String platformName = 'Android';
 
   /// Registers this class as the default instance of [EspProvisioningPlatform]
-  static void registerWith() => EspProvisioningPlatform.instance = EspProvisioningAndroid();
+  static void registerWith() =>
+      EspProvisioningPlatform.instance = EspProvisioningAndroid();
 }

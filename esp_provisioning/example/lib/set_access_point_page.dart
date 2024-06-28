@@ -4,7 +4,11 @@ import 'package:esp_provisioning_example/utilities.dart';
 import 'package:flutter/material.dart';
 
 class SetAccessPointPage extends StatefulWidget {
-  const SetAccessPointPage({required this.provisioner, required this.device, required this.accessPoint, super.key});
+  const SetAccessPointPage(
+      {required this.provisioner,
+      required this.device,
+      required this.accessPoint,
+      super.key});
 
   final EspProvisioning provisioner;
   final EspBleDevice device;
@@ -40,7 +44,9 @@ class _SetAccessPointPageState extends State<SetAccessPointPage> {
                 padding: const EdgeInsets.all(10),
                 child: Column(
                   children: [
-                    Text(ssid == null ? 'Enter the SSID' : "Enter password for '$ssid'"),
+                    Text(ssid == null
+                        ? 'Enter the SSID'
+                        : "Enter password for '$ssid'"),
                     const SizedBox(height: 10),
                     TextFormField(
                       initialValue: ssid,
@@ -62,7 +68,8 @@ class _SetAccessPointPageState extends State<SetAccessPointPage> {
                     ),
                     const SizedBox(height: 10),
                     ElevatedButton(
-                      onPressed: _busy ? null : () => _setAccessPointTapped(context),
+                      onPressed:
+                          _busy ? null : () => _setAccessPointTapped(context),
                       child: const Text('Set Access Point'),
                     ),
                   ],
@@ -80,7 +87,8 @@ class _SetAccessPointPageState extends State<SetAccessPointPage> {
     hideKeyboard();
 
     try {
-      await widget.provisioner.setAccessPoint(widget.device.name, _ssid, _password);
+      await widget.provisioner
+          .setAccessPoint(widget.device.name, _ssid, _password);
       if (!context.mounted) return;
 
       await showDialog<void>(
@@ -90,14 +98,16 @@ class _SetAccessPointPageState extends State<SetAccessPointPage> {
           content: const Text('The device is now disconnected.'),
           actions: [
             TextButton(
-              onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+              onPressed: () =>
+                  Navigator.of(context).popUntil((route) => route.isFirst),
               child: const Text('OK'),
             ),
           ],
         ),
       );
     } catch (e) {
-      if (context.mounted) context.showSimpleSnackBar('Failed to set access point: $e');
+      if (context.mounted)
+        context.showSimpleSnackBar('Failed to set access point: $e');
       setState(() => _busy = false);
     }
   }
