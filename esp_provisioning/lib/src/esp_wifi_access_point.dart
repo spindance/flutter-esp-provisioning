@@ -8,7 +8,7 @@ part 'esp_wifi_access_point.g.dart';
 
 /// Represents a Wi-Fi access point as reported by an ESP device.
 @freezed
-class EspWifiAccessPoint with _$EspWifiAccessPoint{
+class EspWifiAccessPoint with _$EspWifiAccessPoint {
   /// Creates a new instance of [EspWifiAccessPoint].
   factory EspWifiAccessPoint({
     /// The SSID of the access point.

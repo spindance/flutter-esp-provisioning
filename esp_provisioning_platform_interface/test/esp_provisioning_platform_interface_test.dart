@@ -23,9 +23,7 @@ void main() {
       EspProvisioningPlatform.instance = espProvisioning;
       log = <MethodCall>[];
 
-      TestDefaultBinaryMessengerBinding
-          .instance
-          .defaultBinaryMessenger
+      TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
           .setMockMethodCallHandler(espProvisioning.methodChannel, (methodCall) async {
         log.add(methodCall);
 

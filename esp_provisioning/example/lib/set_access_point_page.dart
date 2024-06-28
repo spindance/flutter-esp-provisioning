@@ -75,7 +75,7 @@ class _SetAccessPointPageState extends State<SetAccessPointPage> {
     );
   }
 
-  Future<void> _setAccessPointTapped(BuildContext context) async{
+  Future<void> _setAccessPointTapped(BuildContext context) async {
     setState(() => _busy = true);
     hideKeyboard();
 

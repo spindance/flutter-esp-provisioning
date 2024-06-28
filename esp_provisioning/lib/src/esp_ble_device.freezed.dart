@@ -28,22 +28,19 @@ mixin _$EspBleDevice {
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $EspBleDeviceCopyWith<EspBleDevice> get copyWith =>
-      throw _privateConstructorUsedError;
+  $EspBleDeviceCopyWith<EspBleDevice> get copyWith => throw _privateConstructorUsedError;
 }
 
 /// @nodoc
 abstract class $EspBleDeviceCopyWith<$Res> {
-  factory $EspBleDeviceCopyWith(
-          EspBleDevice value, $Res Function(EspBleDevice) then) =
+  factory $EspBleDeviceCopyWith(EspBleDevice value, $Res Function(EspBleDevice) then) =
       _$EspBleDeviceCopyWithImpl<$Res, EspBleDevice>;
   @useResult
   $Res call({String name, int rssi});
 }
 
 /// @nodoc
-class _$EspBleDeviceCopyWithImpl<$Res, $Val extends EspBleDevice>
-    implements $EspBleDeviceCopyWith<$Res> {
+class _$EspBleDeviceCopyWithImpl<$Res, $Val extends EspBleDevice> implements $EspBleDeviceCopyWith<$Res> {
   _$EspBleDeviceCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
@@ -71,10 +68,8 @@ class _$EspBleDeviceCopyWithImpl<$Res, $Val extends EspBleDevice>
 }
 
 /// @nodoc
-abstract class _$$EspBleDeviceImplCopyWith<$Res>
-    implements $EspBleDeviceCopyWith<$Res> {
-  factory _$$EspBleDeviceImplCopyWith(
-          _$EspBleDeviceImpl value, $Res Function(_$EspBleDeviceImpl) then) =
+abstract class _$$EspBleDeviceImplCopyWith<$Res> implements $EspBleDeviceCopyWith<$Res> {
+  factory _$$EspBleDeviceImplCopyWith(_$EspBleDeviceImpl value, $Res Function(_$EspBleDeviceImpl) then) =
       __$$EspBleDeviceImplCopyWithImpl<$Res>;
   @override
   @useResult
@@ -82,11 +77,9 @@ abstract class _$$EspBleDeviceImplCopyWith<$Res>
 }
 
 /// @nodoc
-class __$$EspBleDeviceImplCopyWithImpl<$Res>
-    extends _$EspBleDeviceCopyWithImpl<$Res, _$EspBleDeviceImpl>
+class __$$EspBleDeviceImplCopyWithImpl<$Res> extends _$EspBleDeviceCopyWithImpl<$Res, _$EspBleDeviceImpl>
     implements _$$EspBleDeviceImplCopyWith<$Res> {
-  __$$EspBleDeviceImplCopyWithImpl(
-      _$EspBleDeviceImpl _value, $Res Function(_$EspBleDeviceImpl) _then)
+  __$$EspBleDeviceImplCopyWithImpl(_$EspBleDeviceImpl _value, $Res Function(_$EspBleDeviceImpl) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
@@ -113,8 +106,7 @@ class __$$EspBleDeviceImplCopyWithImpl<$Res>
 class _$EspBleDeviceImpl with DiagnosticableTreeMixin implements _EspBleDevice {
   const _$EspBleDeviceImpl({required this.name, required this.rssi});
 
-  factory _$EspBleDeviceImpl.fromJson(Map<String, dynamic> json) =>
-      _$$EspBleDeviceImplFromJson(json);
+  factory _$EspBleDeviceImpl.fromJson(Map<String, dynamic> json) => _$$EspBleDeviceImplFromJson(json);
 
   /// The device's advertised name.
   @override
@@ -166,12 +158,9 @@ class _$EspBleDeviceImpl with DiagnosticableTreeMixin implements _EspBleDevice {
 }
 
 abstract class _EspBleDevice implements EspBleDevice {
-  const factory _EspBleDevice(
-      {required final String name,
-      required final int rssi}) = _$EspBleDeviceImpl;
+  const factory _EspBleDevice({required final String name, required final int rssi}) = _$EspBleDeviceImpl;
 
-  factory _EspBleDevice.fromJson(Map<String, dynamic> json) =
-      _$EspBleDeviceImpl.fromJson;
+  factory _EspBleDevice.fromJson(Map<String, dynamic> json) = _$EspBleDeviceImpl.fromJson;
 
   @override
 
@@ -183,6 +172,5 @@ abstract class _EspBleDevice implements EspBleDevice {
   int get rssi;
   @override
   @JsonKey(ignore: true)
-  _$$EspBleDeviceImplCopyWith<_$EspBleDeviceImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  _$$EspBleDeviceImplCopyWith<_$EspBleDeviceImpl> get copyWith => throw _privateConstructorUsedError;
 }

@@ -4,9 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-class MockEspProvisioningPlatform extends Mock
-    with MockPlatformInterfaceMixin
-    implements EspProvisioningPlatform {}
+class MockEspProvisioningPlatform extends Mock with MockPlatformInterfaceMixin implements EspProvisioningPlatform {}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -32,7 +30,8 @@ void main() {
     test('scanForDevices', () async {
       const prefix = 'name prefix';
       const devices = [deviceA, deviceB];
-      when(() => espProvisioningPlatform.scanForEspDevices(prefix)).thenAnswer((_) async => devices.map((d) => d.name).toList());
+      when(() => espProvisioningPlatform.scanForEspDevices(prefix))
+          .thenAnswer((_) async => devices.map((d) => d.name).toList());
       expect(await subject.scanForDevices(prefix), devices);
     });
 
