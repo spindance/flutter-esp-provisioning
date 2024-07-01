@@ -8,9 +8,9 @@ part of 'esp_wifi_access_point.dart';
 
 _$EspWifiAccessPointImpl _$$EspWifiAccessPointImplFromJson(Map<String, dynamic> json) => _$EspWifiAccessPointImpl(
       ssid: json['ssid'] as String,
-      channel: (json['channel'] as num).toInt(),
+      channel: json['channel'] as int,
       security: EspWifiAccessPointSecurity.fromJson(json['security'] as String),
-      rssi: (json['rssi'] as num).toInt(),
+      rssi: json['rssi'] as int,
     );
 
 Map<String, dynamic> _$$EspWifiAccessPointImplToJson(_$EspWifiAccessPointImpl instance) => <String, dynamic>{
