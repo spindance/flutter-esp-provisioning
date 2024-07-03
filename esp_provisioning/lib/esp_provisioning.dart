@@ -11,6 +11,12 @@ export 'src/esp_wifi_access_point_security.dart';
 
 /// The main/public class for the ESP Provisioning plugin. Provides access to all plugin methods.
 class EspProvisioning {
+  /// Creates a new instance of [EspProvisioning] with the specified [_provisioningServiceUuid], which is the UUID of
+  /// the BLE service that the device provides for Wi-Fi provisioning, which is implementation-specific on the device.
+  EspProvisioning(this._provisioningServiceUuid);
+
+  final String _provisioningServiceUuid;
+
   /// The default response timeout for all operations, in seconds.
   static const defaultResponseTimeoutSec = 10;
 
@@ -31,10 +37,9 @@ class EspProvisioning {
   Future<void> stopScan() => _espPlatform.stopEspDeviceScan();
 
   /// Connects to a BLE device with the specified name. The [proofOfPossession] is used to authenticate the device, and
-  /// is optional because the device can optionally support that feature. The [provisioningServiceUuid] is the UUID of
-  /// BLE service that the device is using for provisioning, which is implementation-specific on the device.
-  Future<void> connect(String deviceName, String provisioningServiceUuid, String? proofOfPossession) =>
-      _espPlatform.connectDevice(deviceName, provisioningServiceUuid, proofOfPossession);
+  /// is optional because the device can optionally support that feature.
+  Future<void> connect(String deviceName, String? proofOfPossession) =>
+      _espPlatform.connectDevice(deviceName, _provisioningServiceUuid, proofOfPossession);
 
   /// Disconnects from the BLE device with the specified [deviceName].
   Future<void> disconnect(String deviceName) => _espPlatform.disconnectDevice(deviceName);

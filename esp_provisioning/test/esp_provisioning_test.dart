@@ -12,6 +12,8 @@ class MockEspProvisioningPlatform extends Mock with MockPlatformInterfaceMixin i
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
+  const proofOfPossession = 'proof of possession';
+  const serviceUuid = 'service uuid';
   const deviceA = EspBleDevice(name: 'device A', rssi: -50);
   const deviceB = EspBleDevice(name: 'device B', rssi: -60);
   const devices = [deviceA, deviceB];
@@ -28,7 +30,7 @@ void main() {
       '{"ssid": "${ap.ssid}", "channel": ${ap.channel}, "security": "${ap.security.value}", "rssi": ${ap.rssi}}';
 
   group('EspProvisioning', () {
-    final subject = EspProvisioning();
+    final subject = EspProvisioning(serviceUuid);
     late EspProvisioningPlatform espProvisioningPlatform;
 
     setUp(() {
@@ -56,9 +58,10 @@ void main() {
     });
 
     test('connect', () async {
-      when(() => espProvisioningPlatform.connectDevice(deviceA.name, 'uuid', null)).thenAnswer((_) async {});
-      await subject.connect(deviceA.name, 'uuid', null);
-      verify(() => espProvisioningPlatform.connectDevice(deviceA.name, 'uuid', null)).called(1);
+      when(() => espProvisioningPlatform.connectDevice(deviceA.name, serviceUuid, proofOfPossession))
+          .thenAnswer((_) async {});
+      await subject.connect(deviceA.name, proofOfPossession);
+      verify(() => espProvisioningPlatform.connectDevice(deviceA.name, serviceUuid, proofOfPossession)).called(1);
     });
 
     test('disconnect', () async {

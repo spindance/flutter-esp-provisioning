@@ -1,6 +1,5 @@
 import 'package:esp_provisioning/esp_provisioning.dart';
 import 'package:esp_provisioning_example/build_context_ext.dart';
-import 'package:esp_provisioning_example/constants.dart';
 import 'package:esp_provisioning_example/set_access_point_page.dart';
 import 'package:flutter/material.dart';
 
@@ -86,7 +85,7 @@ class _ConnectPageState extends State<ConnectPage> {
     context.showSimpleSnackBar('Connecting to ${widget.device.name}');
 
     try {
-      await widget.provisioner.connect(widget.device.name, Constants.provisioningServiceUuid, null);
+      await widget.provisioner.connect(widget.device.name, null);
       setState(() => _isConnected = true);
     } catch (e) {
       message = 'Failed to connect: $e';
