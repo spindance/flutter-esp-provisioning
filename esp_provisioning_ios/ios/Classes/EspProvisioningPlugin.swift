@@ -83,6 +83,18 @@ public class EspProvisioningPlugin: NSObject, FlutterPlugin {
       }
 
       sendData(deviceName: deviceName, path: endpointPath, dataString: dataString, resultCallback: result)
+
+    case "sendBytes":
+      guard
+        let dictionary = call.arguments as? Dictionary<String, Any>,
+        let deviceName = dictionary[PluginConstants.ArgumentNames.deviceName] as? String,
+        let endpointPath = dictionary[PluginConstants.ArgumentNames.endpointPath] as? String,
+        let data = dictionary[PluginConstants.ArgumentNames.base64DataString] as? Data
+      else {
+        Utilities.reportFailure(with: badInputsError, resultCallback: result)
+        return
+      }
+
     default:
       result(FlutterMethodNotImplemented)
     }
@@ -264,6 +276,40 @@ public class EspProvisioningPlugin: NSObject, FlutterPlugin {
       }
 
       resultCallback(data.base64EncodedString())
+    }
+  }
+
+  func sendDataOther(
+    deviceName: String,
+    path: String,
+    data: Data,
+    resultCallback: @escaping FlutterResult
+  ) {
+    Utilities.log(message: "Sending data to endpoint '\(path)': \(data.bytes.count) bytes")
+
+//    guard let byteArray = Data(base64Encoded: dataString) else {
+//      let error = EspPluginError.unexpectedError("decode() sendData failed")
+//      Utilities.reportFailure(with: error, resultCallback: resultCallback)
+//      return
+//    }
+
+    guard let device = find(deviceNamed: deviceName, resultCallback: resultCallback) else { return }
+
+    device.sendData(path: path, data: data) { responseData, error in
+      guard error == nil else {
+        Utilities.reportFailure(with: error!, resultCallback: resultCallback, message: "sendData() failed")
+        return
+      }
+
+      guard let responseData = responseData else {
+        Utilities.reportFailure(
+          with: EspPluginError.unexpectedError("error and data are both nil"),
+          resultCallback: resultCallback
+        )
+        return
+      }
+
+      resultCallback(responseData)
     }
   }
 

@@ -87,4 +87,14 @@ abstract class EspProvisioningPlatform extends PlatformInterface {
     if (base64StringResult == null) throw Exception('Unable to send data.');
     return base64StringResult;
   }
+
+  Future<Uint8List> sendBytes(String deviceName, String endpointPath, Uint8List data) async {
+    final response = await methodChannel.invokeMethod<Uint8List>(PluginMethodNames.sendBytes, <String, dynamic>{
+      PluginArgumentNames.deviceName: deviceName,
+      PluginArgumentNames.endpointPath: endpointPath,
+      PluginArgumentNames.data: data,
+    });
+    if (response == null) throw Exception('Unable to send data.');
+    return response;
+  }
 }

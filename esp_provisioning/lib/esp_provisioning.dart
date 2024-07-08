@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:typed_data';
 
 import 'package:esp_provisioning_platform_interface/esp_provisioning_platform_interface.dart';
 
@@ -90,6 +91,17 @@ class EspProvisioning {
     int responseTimeoutSec = defaultResponseTimeoutSec,
   ]) =>
       _espPlatform.sendData(deviceName, endpoint, base64Data).timeout(
+            Duration(seconds: responseTimeoutSec),
+            onTimeout: () => throw TimeoutException('Failed to send data within 10 seconds.'),
+          );
+
+  Future<Uint8List> sendBytesToEndpoint(
+    String deviceName,
+    String endpoint,
+    Uint8List bytes, [
+    int responseTimeoutSec = defaultResponseTimeoutSec,
+  ]) =>
+      _espPlatform.sendBytes(deviceName, endpoint, bytes).timeout(
             Duration(seconds: responseTimeoutSec),
             onTimeout: () => throw TimeoutException('Failed to send data within 10 seconds.'),
           );

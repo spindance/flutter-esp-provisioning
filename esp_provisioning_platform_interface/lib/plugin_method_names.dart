@@ -20,4 +20,6 @@ class PluginMethodNames {
 
   /// Method name to send Base64 encoded data to the ESP device.
   static const sendData = 'sendData';
+
+  static const sendBytes = 'sendBytes';
 }

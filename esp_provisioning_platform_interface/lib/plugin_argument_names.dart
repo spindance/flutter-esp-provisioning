@@ -20,4 +20,7 @@ class PluginArgumentNames {
 
   /// Argument name for the Base64 encoded data.
   static const base64Data = 'base64Data';
+
+  /// Argument name for data in the form of a byte array.
+  static const data = 'data';
 }
