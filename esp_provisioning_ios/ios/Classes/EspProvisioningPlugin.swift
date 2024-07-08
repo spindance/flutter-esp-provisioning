@@ -76,13 +76,13 @@ public class EspProvisioningPlugin: NSObject, FlutterPlugin {
         let dictionary = call.arguments as? Dictionary<String, Any>,
         let deviceName = dictionary[PluginConstants.ArgumentNames.deviceName] as? String,
         let endpointPath = dictionary[PluginConstants.ArgumentNames.endpointPath] as? String,
-        let data = dictionary[PluginConstants.ArgumentNames.data] as? Data
+        let data = dictionary[PluginConstants.ArgumentNames.data] as? FlutterStandardTypedData
       else {
         Utilities.reportFailure(with: badInputsError, resultCallback: result)
         return
       }
 
-      sendData(deviceName: deviceName, path: endpointPath, data: data, resultCallback: result)
+      sendData(deviceName: deviceName, path: endpointPath, data: data.data, resultCallback: result)
 
     default:
       result(FlutterMethodNotImplemented)

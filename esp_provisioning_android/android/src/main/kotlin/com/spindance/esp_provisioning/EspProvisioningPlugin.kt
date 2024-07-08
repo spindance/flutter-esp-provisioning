@@ -106,17 +106,17 @@ class EspProvisioningPlugin : FlutterPlugin, MethodCallHandler {
         setAccessPoint(deviceName, ssid, password, resultCallback)
       }
       SEND_DATA -> {
-        val arguments: HashMap<String, String>? = call.arguments()
-        val deviceName: String? = arguments?.get(DEVICE_NAME)
-        val endpointPath: String? = arguments?.get(ENDPOINT_PATH)
-        val base64Data: String? = arguments?.get(BASE64_DATA)
+        val arguments: HashMap<String, Any>? = call.arguments()
+        val deviceName: String? = arguments?.get(DEVICE_NAME) as String?
+        val endpointPath: String? = arguments?.get(ENDPOINT_PATH) as String?
+        val data: ByteArray? = arguments?.get(DATA) as ByteArray?
 
-        if (deviceName == null || endpointPath == null || base64Data == null) {
+        if (deviceName == null || endpointPath == null || data == null) {
           resultCallback.reportBadArgs(SEND_DATA)
           return
         }
 
-        sendData(deviceName, endpointPath, base64Data, resultCallback)
+        sendData(deviceName, endpointPath, data, resultCallback)
       }
       else -> {
         resultCallback.notImplemented()
@@ -231,13 +231,12 @@ class EspProvisioningPlugin : FlutterPlugin, MethodCallHandler {
   }
 
   /// Processes sendData requests (write data to custom BLE endpoint).
-  private fun sendData(deviceName: String, path: String, base64Data: String, resultCallback: Result) {
+  private fun sendData(deviceName: String, path: String, data: ByteArray, resultCallback: Result) {
     findEspDevice(deviceName, resultCallback)?.let { device ->
-      val dataBytes = Base64.decode(base64Data, Base64.DEFAULT)
-      device.sendDataToCustomEndPoint(path, dataBytes, SendDataListener { result ->
+      device.sendDataToCustomEndPoint(path, data, SendDataListener { result ->
         result.fold(
           onFailure = { resultCallback.logErrorAndFail(it) },
-          onSuccess = { resultCallback.success(String(Base64.encode(it, Base64.DEFAULT))) }
+          onSuccess = { resultCallback.success(it) }
         )
       })
     }
@@ -314,7 +313,7 @@ class EspProvisioningPlugin : FlutterPlugin, MethodCallHandler {
     private const val SSID = "ssid"
     private const val PASSWORD = "password"
     private const val ENDPOINT_PATH = "endpointPath"
-    private const val BASE64_DATA = "base64Data"
+    private const val DATA = "data"
 
     private fun Result.logErrorAndFail(error: Throwable) {
       Log.e(TAG, "Error: $error")
