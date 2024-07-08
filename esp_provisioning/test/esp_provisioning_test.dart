@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:esp_provisioning/esp_provisioning.dart';
 import 'package:esp_provisioning_platform_interface/esp_provisioning_platform_interface.dart';
@@ -17,6 +18,8 @@ void main() {
   const deviceA = EspBleDevice(name: 'device A', rssi: -50);
   const deviceB = EspBleDevice(name: 'device B', rssi: -60);
   const devices = [deviceA, deviceB];
+  const password = 'password';
+  const endpoint = 'endpoint';
 
   const ap = EspWifiAccessPoint(ssid: 'ssid', channel: 1, security: EspWifiAccessPointSecurity.wep, rssi: -1);
 
@@ -28,6 +31,8 @@ void main() {
   final deviceJsonStrings = [deviceAJsonString, deviceBJsonString];
   final accessPointJsonString =
       '{"ssid": "${ap.ssid}", "channel": ${ap.channel}, "security": "${ap.security.value}", "rssi": ${ap.rssi}}';
+  final data = Uint8List.fromList([0, 2, 4]);
+  final dataResponse = Uint8List.fromList([1, 3, 5]);
 
   group('EspProvisioning', () {
     final subject = EspProvisioning(serviceUuid);
@@ -90,7 +95,6 @@ void main() {
     });
 
     test('setAccessPoint', () async {
-      const password = 'password';
       when(() => espProvisioningPlatform.setEspAccessPoint(deviceA.name, ap.ssid, password)).thenAnswer((_) async {});
       await subject.setAccessPoint(deviceA.name, ap.ssid, password);
       verify(() => espProvisioningPlatform.setEspAccessPoint(deviceA.name, ap.ssid, password)).called(1);
@@ -98,7 +102,6 @@ void main() {
 
     test('setAccessPoint throws upon timeout', () {
       fakeAsync((async) {
-        const password = 'password';
         when(() => espProvisioningPlatform.setEspAccessPoint(deviceA.name, ap.ssid, password)).thenAnswer((_) async {
           await Future<void>.delayed(const Duration(seconds: 2));
         });
@@ -109,22 +112,16 @@ void main() {
     });
 
     test('sendDataToEndpoint', () async {
-      const endpoint = 'endpoint';
-      const data = 'data';
-      const response = 'response';
-      when(() => espProvisioningPlatform.sendData(deviceA.name, endpoint, data)).thenAnswer((_) async => response);
-      expect(await subject.sendDataToEndpoint(deviceA.name, endpoint, data), response);
+      when(() => espProvisioningPlatform.sendData(deviceA.name, endpoint, data)).thenAnswer((_) async => dataResponse);
+      expect(await subject.sendDataToEndpoint(deviceA.name, endpoint, data), dataResponse);
       verify(() => espProvisioningPlatform.sendData(deviceA.name, endpoint, data)).called(1);
     });
 
     test('sendDataToEndpoint throws upon timeout', () {
       fakeAsync((async) {
-        const endpoint = 'endpoint';
-        const data = 'data';
-        const response = 'response';
         when(() => espProvisioningPlatform.sendData(deviceA.name, endpoint, data)).thenAnswer((_) async {
           await Future<void>.delayed(const Duration(seconds: 2));
-          return response;
+          return dataResponse;
         });
         expect(() => subject.sendDataToEndpoint(deviceA.name, endpoint, data, 1), throwsA(isA<TimeoutException>()));
         verify(() => espProvisioningPlatform.sendData(deviceA.name, endpoint, data)).called(1);

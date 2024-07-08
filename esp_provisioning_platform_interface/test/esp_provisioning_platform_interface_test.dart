@@ -17,6 +17,10 @@ void main() {
   late List<MethodCall> log;
   const scannedDeviceNames = ['device1', 'device2'];
   const deviceName = 'Device';
+  const endpoint = 'Endpoint';
+
+  final data = Uint8List.fromList([0, 2, 4]);
+  final dataResponse = Uint8List.fromList([1, 3, 5]);
 
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -45,7 +49,7 @@ void main() {
           case 'setAccessPoint':
             return null;
           case 'sendData':
-            return '';
+            return dataResponse;
           default:
             return null;
         }
@@ -118,14 +122,12 @@ void main() {
     });
 
     test('sendData', () async {
-      const endpoint = 'Endpoint';
-      const data = 'Data';
       await subject.sendData(deviceName, endpoint, data);
 
       final expectedArguments = <String, dynamic>{
         'deviceName': deviceName,
         'endpointPath': endpoint,
-        'base64Data': data,
+        'data': data,
       };
 
       expect(log, <Matcher>[isMethodCall('sendData', arguments: expectedArguments)]);
@@ -133,7 +135,7 @@ void main() {
 
     test('sendData throws when return value is null', () async {
       messenger.setMockMethodCallHandler(subject.methodChannel, (methodCall) async => null);
-      expect(() async => subject.sendData(deviceName, 'Endpoint', 'Data'), throwsA(isA<Exception>()));
+      expect(() async => subject.sendData(deviceName, endpoint, data), throwsA(isA<Exception>()));
     });
   });
 }

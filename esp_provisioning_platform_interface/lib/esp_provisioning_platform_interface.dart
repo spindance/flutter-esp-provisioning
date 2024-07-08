@@ -76,25 +76,16 @@ abstract class EspProvisioningPlatform extends PlatformInterface {
         PluginArgumentNames.password: password,
       });
 
-  /// Send Base64 encoded data to the ESP device with the specified [deviceName] using the custom BLE endpoint indicated
-  /// by [endpointPath].
-  Future<String> sendData(String deviceName, String endpointPath, String base64Data) async {
-    final base64StringResult = await methodChannel.invokeMethod<String>(PluginMethodNames.sendData, <String, dynamic>{
-      PluginArgumentNames.deviceName: deviceName,
-      PluginArgumentNames.endpointPath: endpointPath,
-      PluginArgumentNames.base64Data: base64Data,
-    });
-    if (base64StringResult == null) throw Exception('Unable to send data.');
-    return base64StringResult;
-  }
-
-  Future<Uint8List> sendBytes(String deviceName, String endpointPath, Uint8List data) async {
-    final response = await methodChannel.invokeMethod<Uint8List>(PluginMethodNames.sendBytes, <String, dynamic>{
+  /// Send [data] to the ESP device with the specified [deviceName] using the custom BLE endpoint indicated by
+  /// [endpointPath].
+  Future<Uint8List> sendData(String deviceName, String endpointPath, Uint8List data) async {
+    final base64StringResult =
+        await methodChannel.invokeMethod<Uint8List>(PluginMethodNames.sendData, <String, dynamic>{
       PluginArgumentNames.deviceName: deviceName,
       PluginArgumentNames.endpointPath: endpointPath,
       PluginArgumentNames.data: data,
     });
-    if (response == null) throw Exception('Unable to send data.');
-    return response;
+    if (base64StringResult == null) throw Exception('Unable to send data.');
+    return base64StringResult;
   }
 }

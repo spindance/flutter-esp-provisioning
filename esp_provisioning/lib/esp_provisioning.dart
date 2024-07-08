@@ -81,27 +81,15 @@ class EspProvisioning {
             onTimeout: () => throw TimeoutException('Failed to set access point within 10 seconds.'),
           );
 
-  /// Sends the Base64 encoded string [base64Data] to the specified [endpoint] on the device with [deviceName],
-  /// returning a Base64 encoded response string.  [responseTimeoutSec] is optional and defaults to
-  /// [defaultResponseTimeoutSec].
-  Future<String> sendDataToEndpoint(
+  /// Sends [data] to the specified [endpoint] on the device with [deviceName], returning a [Uint8List] response.
+  /// [responseTimeoutSec] is optional and defaults to [defaultResponseTimeoutSec].
+  Future<Uint8List> sendDataToEndpoint(
     String deviceName,
     String endpoint,
-    String base64Data, [
+    Uint8List data, [
     int responseTimeoutSec = defaultResponseTimeoutSec,
   ]) =>
-      _espPlatform.sendData(deviceName, endpoint, base64Data).timeout(
-            Duration(seconds: responseTimeoutSec),
-            onTimeout: () => throw TimeoutException('Failed to send data within 10 seconds.'),
-          );
-
-  Future<Uint8List> sendBytesToEndpoint(
-    String deviceName,
-    String endpoint,
-    Uint8List bytes, [
-    int responseTimeoutSec = defaultResponseTimeoutSec,
-  ]) =>
-      _espPlatform.sendBytes(deviceName, endpoint, bytes).timeout(
+      _espPlatform.sendData(deviceName, endpoint, data).timeout(
             Duration(seconds: responseTimeoutSec),
             onTimeout: () => throw TimeoutException('Failed to send data within 10 seconds.'),
           );

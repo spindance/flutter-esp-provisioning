@@ -19,7 +19,7 @@ enum PluginConstants {
     static let ssid = "ssid"
     static let password = "password"
     static let endpointPath = "endpointPath"
-    static let base64DataString = "base64Data"
+    static let data = "data"
   }
 
   enum WifiSecurityNames {
