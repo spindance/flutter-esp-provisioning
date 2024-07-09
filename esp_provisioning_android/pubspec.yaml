@@ -1,6 +1,6 @@
 name: esp_provisioning_android
 description: Android implementation of the esp_provisioning plugin
-version: 0.1.0+1
+version: 1.0.0
 publish_to: none
 
 environment:

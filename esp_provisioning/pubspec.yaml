@@ -1,6 +1,6 @@
 name: esp_provisioning
 description: SpinDance Flutter federated plugin; wraps Espressif's native mobile provisioning libraries.
-version: 0.1.0+1
+version: 1.0.0
 publish_to: none
 
 environment:

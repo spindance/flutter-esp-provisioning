@@ -1,6 +1,6 @@
 name: esp_provisioning_example
 description: Demonstrates how to use the esp_provisioning plugin.
-version: 0.1.0+1
+version: 1.0.0
 publish_to: none
 
 environment:
