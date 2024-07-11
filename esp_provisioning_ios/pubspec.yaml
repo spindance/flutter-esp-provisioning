@@ -1,0 +1,27 @@
+name: esp_provisioning_ios
+description: iOS implementation of the esp_provisioning plugin
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: "^3.3.0"
+
+flutter:
+  plugin:
+    implements: esp_provisioning
+    platforms:
+      ios:
+        pluginClass: EspProvisioningPlugin
+        dartPluginClass: EspProvisioningIos
+
+dependencies:
+  esp_provisioning_platform_interface:
+    path: ../esp_provisioning_platform_interface
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.8
+  very_good_analysis: ^5.1.0

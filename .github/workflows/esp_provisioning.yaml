@@ -1,0 +1,36 @@
+name: esp_provisioning
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/esp_provisioning.yaml"
+      - "esp_provisioning/**"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/esp_provisioning.yaml"
+      - "esp_provisioning/**"
+
+jobs:
+  spell-check:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/spell_check.yml@v1
+    with:
+      includes: |
+        **/*.md
+        !brick/**/*.md
+        .*/**/*.md
+      modified_files_only: false
+
+  build:
+    uses: VeryGoodOpenSource/very_good_workflows/.github/workflows/flutter_package.yml@v1
+    with:
+      flutter_channel: stable
+      flutter_version: 3.19.0
+      working_directory: esp_provisioning
+      format_line_length: "120"
+      coverage_excludes: '**/*.g.dart **/*.freezed.dart'

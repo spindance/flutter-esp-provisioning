@@ -1,0 +1,17 @@
+name: esp_provisioning_platform_interface
+description: A common platform interface for the esp_provisioning plugin.
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: "^3.3.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  plugin_platform_interface: ^2.1.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  very_good_analysis: ^5.1.0
