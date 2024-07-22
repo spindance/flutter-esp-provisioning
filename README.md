@@ -23,7 +23,7 @@ To be clear, this plugin does not (yet) support:
 
 ## Dependencies
 
-We are using explicit versions of `json_annotation` (`v4.8.1`) and `json_serializable` (`v6.7.1`) to be compatible with Amplify Flutter v2, which is used by [Callbox Flutter](https://github.com/spindance/callbox-mobile-flutter). This is the `flutter pub get` output when using more recent versions of those package (that is, this is the issue we are working around by using the older versions):
+We are using explicit older versions of `json_annotation` (`v4.8.1`) and `json_serializable` (`v6.7.1`) in order to be compatible with Amplify Flutter v2, which is required by a different SpinDance-developed package that utilizes this package. This is the `flutter pub get` output when using more recent versions of those packages (that is, this is the issue we are working around by using the older versions):
 
 ```bash
 [packages/callbox_sdk] flutter pub get --no-example
