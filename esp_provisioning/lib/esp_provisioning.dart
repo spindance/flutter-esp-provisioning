@@ -54,7 +54,7 @@ class EspProvisioning {
     // Get the access points as JSON strings.
     final accessPointJsonStrings = await _espPlatform.getEspAccessPoints(deviceName).timeout(
           Duration(seconds: responseTimeoutSec),
-          onTimeout: () => throw TimeoutException('Failed to get access points within 10 seconds.'),
+          onTimeout: () => throw TimeoutException('Failed to get access points within $responseTimeoutSec seconds.'),
         );
 
     // Deserialize the JSON strings into maps.
@@ -78,7 +78,7 @@ class EspProvisioning {
   ]) =>
       _espPlatform.setEspAccessPoint(deviceName, ssid, password).timeout(
             Duration(seconds: responseTimeoutSec),
-            onTimeout: () => throw TimeoutException('Failed to set access point within 10 seconds.'),
+            onTimeout: () => throw TimeoutException('Failed to set access point within $responseTimeoutSec seconds.'),
           );
 
   /// Sends [data] to the specified [endpoint] on the device with [deviceName], returning a [Uint8List] response.
@@ -91,6 +91,6 @@ class EspProvisioning {
   ]) =>
       _espPlatform.sendData(deviceName, endpoint, data).timeout(
             Duration(seconds: responseTimeoutSec),
-            onTimeout: () => throw TimeoutException('Failed to send data within 10 seconds.'),
+            onTimeout: () => throw TimeoutException('Failed to send data within $responseTimeoutSec seconds.'),
           );
 }
