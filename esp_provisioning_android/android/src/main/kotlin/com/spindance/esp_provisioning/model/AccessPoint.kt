@@ -1,4 +1,4 @@
-package com.spindance.esp_provisioning
+package com.spindance.esp_provisioning.model
 
 import com.espressif.provisioning.WiFiAccessPoint
 //import kotlinx.serialization.Serializable

@@ -1,4 +1,4 @@
-package com.spindance.esp_provisioning
+package com.spindance.esp_provisioning.model
 
 //import kotlinx.serialization.Serializable
 

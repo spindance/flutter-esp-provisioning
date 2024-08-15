@@ -1,4 +1,4 @@
-package com.spindance.esp_provisioning
+package com.spindance.esp_provisioning.model
 
 sealed class EspException(val errorCodeString: String) : Exception(errorCodeString) {
   data object ScanStartFailed: EspException("ScanStartFailed")
