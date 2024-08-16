@@ -5,6 +5,8 @@ import android.bluetooth.BluetoothDevice
 import android.bluetooth.le.ScanResult
 import android.util.Log
 import com.espressif.provisioning.listeners.BleScanListener
+import com.spindance.esp_provisioning.model.EspException
+import com.spindance.esp_provisioning.model.ScannedPeripheral
 
 class SdkBleScanListener(
   private val completionCallback: (Result<Map<String, ScannedPeripheral>>) -> Unit

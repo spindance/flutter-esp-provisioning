@@ -1,8 +1,5 @@
 package com.spindance.esp_provisioning.model
 
-//import kotlinx.serialization.Serializable
-
-//@Serializable
 enum class AccessPointSecurity(val value: Int) {
   OPEN(0),
   WEP(1),
