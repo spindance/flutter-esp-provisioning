@@ -3,6 +3,7 @@ package com.spindance.esp_provisioning
 import android.util.Log
 import com.espressif.provisioning.ESPConstants
 import com.espressif.provisioning.listeners.ProvisionListener
+import com.spindance.esp_provisioning.model.EspException
 import kotlin.Exception
 
 class SdkProvisionListener(

@@ -10,6 +10,9 @@ import com.espressif.provisioning.ESPConstants
 import com.espressif.provisioning.ESPDevice
 import com.espressif.provisioning.ESPProvisionManager
 import com.google.gson.Gson
+import com.spindance.esp_provisioning.model.EspBleDevice
+import com.spindance.esp_provisioning.model.EspException
+import com.spindance.esp_provisioning.model.ScannedPeripheral
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -140,7 +143,7 @@ class EspProvisioningPlugin : FlutterPlugin, MethodCallHandler {
             scannedDevices = deviceMap
 
             // Convert the deviceMap to a list of EspBleDevice converted to JSON strings.
-            val devices = deviceMap.values.map { EspBleDevice(it.device.name, it.scanResult.rssi)}.toList()
+            val devices = deviceMap.values.map { EspBleDevice(it.device.name, it.scanResult.rssi) }.toList()
             val devicesJson = devices.map { Gson().toJson(it).toString() }
             resultCallback.success(devicesJson)
           }

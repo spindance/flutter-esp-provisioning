@@ -3,6 +3,8 @@ package com.spindance.esp_provisioning
 import android.util.Log
 import com.espressif.provisioning.WiFiAccessPoint
 import com.espressif.provisioning.listeners.WiFiScanListener
+import com.spindance.esp_provisioning.model.AccessPoint
+import com.spindance.esp_provisioning.model.EspException
 import java.lang.Exception
 import java.util.ArrayList
 

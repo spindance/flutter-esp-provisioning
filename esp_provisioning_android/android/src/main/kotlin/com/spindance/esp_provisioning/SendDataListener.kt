@@ -2,6 +2,7 @@ package com.spindance.esp_provisioning
 
 import android.util.Log
 import com.espressif.provisioning.listeners.ResponseListener
+import com.spindance.esp_provisioning.model.EspException
 import kotlin.Exception
 
 class SendDataListener(
