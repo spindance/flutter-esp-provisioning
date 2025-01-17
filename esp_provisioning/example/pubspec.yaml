@@ -1,10 +1,10 @@
 name: esp_provisioning_example
 description: Demonstrates how to use the esp_provisioning plugin.
-version: 1.0.2
+version: 1.0.3
 publish_to: none
 
 environment:
-  sdk: "^3.3.0"
+  sdk: "^3.6.1"
 
 dependencies:
   esp_provisioning:
