@@ -26,6 +26,7 @@ apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
 android {
+    namespace 'com.spindance.esp_provisioning.example'
     compileSdk flutter.compileSdkVersion
 
     compileOptions {
@@ -57,7 +58,6 @@ android {
             signingConfig signingConfigs.debug
         }
     }
-    namespace 'com.spindance.esp_provisioning.example'
 }
 
 flutter {
