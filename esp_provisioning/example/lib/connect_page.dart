@@ -87,7 +87,7 @@ class _ConnectPageState extends State<ConnectPage> {
     try {
       await widget.provisioner.connect(widget.device.name, null);
       setState(() => _isConnected = true);
-    } catch (e) {
+    } on Exception catch (e) {
       message = 'Failed to connect: $e';
     }
 
@@ -104,7 +104,7 @@ class _ConnectPageState extends State<ConnectPage> {
         _isConnected = false;
         _accessPoints = [];
       });
-    } catch (e) {
+    } on Exception catch (e) {
       if (!context.mounted) return;
       context.showSimpleSnackBar('Failed to disconnect: $e');
     }
@@ -126,7 +126,7 @@ class _ConnectPageState extends State<ConnectPage> {
       final accessPoints = await widget.provisioner.getAccessPoints(widget.device.name);
       message = 'Found ${accessPoints.length} access points';
       setState(() => _accessPoints = accessPoints);
-    } catch (e) {
+    } on Exception catch (e) {
       message = e.toString();
     }
 

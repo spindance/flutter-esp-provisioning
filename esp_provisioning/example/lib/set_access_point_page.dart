@@ -96,7 +96,7 @@ class _SetAccessPointPageState extends State<SetAccessPointPage> {
           ],
         ),
       );
-    } catch (e) {
+    } on Exception catch (e) {
       if (context.mounted) context.showSimpleSnackBar('Failed to set access point: $e');
       setState(() => _busy = false);
     }
