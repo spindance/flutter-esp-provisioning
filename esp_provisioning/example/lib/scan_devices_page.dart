@@ -106,8 +106,8 @@ class _ScanDevicesPageState extends State<ScanDevicesPage> {
         _scannedDevices = deviceNames;
         _isScanning = false;
       });
-    } catch (error) {
-      if (context.mounted) context.showSimpleSnackBar(error.toString());
+    } on Exception catch (e) {
+      if (context.mounted) context.showSimpleSnackBar(e.toString());
     }
   }
 
